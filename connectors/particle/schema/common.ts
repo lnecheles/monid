@@ -36,12 +36,12 @@ export const zDateBound = z.string().min(4).describe(
  * everyday word such as 'doctors' resolves to the occupation it names.
  */
 export const zGuestFilters = {
-    guest_occupation: z.string().min(1).describe(
+    guest_occupation: z.string().min(1).max(200).describe(
         "Only episodes with a guest listed under this SOC 2018 or ISCO-08 " +
             "occupation (code, slug, or title), including a SOC group or an " +
             "everyday name such as physicians or doctors.",
     ),
-    guest_field: z.string().min(1).describe(
+    guest_field: z.string().min(1).max(200).describe(
         "Only episodes with a guest listed under this ANZSRC 2020 field of " +
             "research (code, slug, or title).",
     ),

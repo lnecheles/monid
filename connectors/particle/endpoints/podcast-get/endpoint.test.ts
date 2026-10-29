@@ -39,6 +39,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the show rides through`, async ()
     });
     const output = result.output as Record<string, unknown>;
     assertEquals(output.slug, "all-in");
+    assertEquals(result.output, fixture.calls[0].res.body);
     assertEquals(typeof output.title, "string");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
@@ -115,10 +116,8 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.01 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
         assert(
             typeof (result.output as Record<string, unknown>).slug === "string",
         );

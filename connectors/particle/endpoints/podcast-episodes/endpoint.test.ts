@@ -37,6 +37,7 @@ Deno.test(`${ID} happy (recorded): $0.03 flat, the page rides through`, async ()
     });
     const output = result.output as Record<string, unknown>;
     assert(Array.isArray(output.data));
+    assertEquals((output.data as unknown[]).length, 2);
     assertEquals(typeof output.has_more, "boolean");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
@@ -67,6 +68,7 @@ Deno.test(`${ID}: the gate — id, limit bounds, transcript_status enum`, async 
     );
     const gateInputs: Gate[] = [
         { pathParams: { id: "" } },
+        { pathParams: { id: "all-in" }, queryParams: { q: "x".repeat(201) } },
         { pathParams: { id: "all-in" }, queryParams: { limit: 0 } },
         {
             pathParams: { id: "all-in" },
@@ -116,10 +118,13 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.03 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        assert(
+            ((result.output as Record<string, unknown>).data as unknown[])
+                .length > 0,
+            "live page carries results",
+        );
         assert(Array.isArray((result.output as Record<string, unknown>).data));
     },
 });

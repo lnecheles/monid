@@ -13,7 +13,7 @@ import {
 export const zPodcastEpisodesPathParams = z.strictObject({ id: zPodcastRef });
 
 export const zPodcastEpisodesQueryParams = z.strictObject({
-    q: z.string().min(1).describe(
+    q: z.string().min(1).max(200).describe(
         "Only episodes whose TITLE contains this text, case-insensitively. " +
             "To search what is said inside episodes, use " +
             "particle#v1/podcasts/episodes/search.",

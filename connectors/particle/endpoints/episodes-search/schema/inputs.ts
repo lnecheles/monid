@@ -16,14 +16,14 @@ import {
  * mirrored: the engine sends scalar query values only (design D6).
  */
 export const zEpisodesSearchQueryParams = z.strictObject({
-    semantic_search: z.string().min(1).describe(
+    semantic_search: z.string().min(1).max(500).describe(
         "Search dialogue by meaning: describe the topic the way you'd " +
             "describe it to a colleague; paraphrase-tolerant. Describe a " +
             "topic, not a name (filter people and companies with " +
             "entity_id / company_id) and not a tone. Combine with " +
             "keyword_search for hybrid ranking.",
     ).optional(),
-    keyword_search: z.string().min(1).describe(
+    keyword_search: z.string().min(1).max(500).describe(
         "BM25 lexical search over dialogue for tokens that must appear " +
             "verbatim (tickers, drug names, product codes). Wrap a token " +
             "sequence in double quotes to require it adjacent and in " +

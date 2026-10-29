@@ -35,6 +35,7 @@ Deno.test(`${ID} happy (recorded): $0.03 flat, segments ride through`, async () 
     });
     const output = result.output as Record<string, unknown>;
     assert(Array.isArray(output.data));
+    assertEquals((output.data as unknown[]).length, 2);
     assertEquals(typeof output.has_more, "boolean");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
@@ -65,6 +66,7 @@ Deno.test(`${ID}: the gate — context and limit bounds, enums, unknown keys`, a
     );
     const rejected: Record<string, Json>[] = [
         { semantic_search: "" },
+        { semantic_search: "x".repeat(501) },
         { semantic_search: "ai agents", context: 0 },
         { semantic_search: "ai agents", context: 16 },
         { semantic_search: "ai agents", limit: 101 },
@@ -139,10 +141,13 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.03 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        assert(
+            ((result.output as Record<string, unknown>).data as unknown[])
+                .length > 0,
+            "live page carries results",
+        );
         assert(Array.isArray((result.output as Record<string, unknown>).data));
     },
 });

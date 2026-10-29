@@ -13,7 +13,7 @@ export default defineEndpoint({
         description: "Find a person, company or knowledge-graph entity " +
             "from free text — a name, partial name, nickname, stock " +
             "ticker, @handle or website domain — ranked by relevance and " +
-            "tagged with a match_quality (exact, partial, fuzzy, " +
+            "tagged with a match_quality (exact, strong, contained, fuzzy, " +
             "description, speculative) so an exact identification is " +
             "distinguishable from a guess. Each result carries a top-level " +
             "type (person, company or knowledge_graph_entity) and the " +

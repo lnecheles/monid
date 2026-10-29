@@ -33,6 +33,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, matches ride through`, async () =
     });
     const output = result.output as Record<string, unknown>;
     assert(Array.isArray(output.data));
+    assertEquals((output.data as unknown[]).length, 2);
     // a result is {type, match_quality, ...} with the matched record nested
     // under its type key (`company`, `person`, `knowledge_graph_entity`);
     // the slug the other endpoints take lives on that nested record
@@ -119,10 +120,13 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.01 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        assert(
+            ((result.output as Record<string, unknown>).data as unknown[])
+                .length > 0,
+            "live page carries results",
+        );
         assert(Array.isArray((result.output as Record<string, unknown>).data));
     },
 });

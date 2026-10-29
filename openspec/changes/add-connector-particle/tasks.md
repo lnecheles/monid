@@ -40,3 +40,15 @@
       search1api, vaquill, magic-hour, renamed bytedance / fundable /
       suzanne routes) and 7 stale lock entries; that belongs in its own
       change.
+
+## 5. Review
+
+- [x] 5.1 CodeRabbit round 1 (2026-10-29): happy tests assert the
+      fixture's result count or deep-equal the recorded body; live tests
+      assert shape only (no amounts); the spec's single-field bounds
+      (q/slug/guest filters 200 chars, search phrases 500, episode minutes
+      0-10080, non-negative cadence and appearance counts) moved into the
+      mirrors with gate cases; entities/search describes the spec's
+      match_quality values (exact, strong, contained, fuzzy, description,
+      speculative)
+

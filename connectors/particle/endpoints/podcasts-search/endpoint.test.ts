@@ -82,6 +82,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the page rides through`, async ()
     });
     const output = result.output as Record<string, unknown>;
     assert(Array.isArray(output.data), "data array present");
+    assertEquals((output.data as unknown[]).length, 2);
     assertEquals(typeof output.has_more, "boolean");
     const first = (output.data as Record<string, unknown>[])[0];
     assertEquals(typeof first.slug, "string");
@@ -119,6 +120,10 @@ Deno.test(`${ID}: the schema gate — bounds, enums, unknown keys`, async () => 
     );
     const rejected: Record<string, Json>[] = [
         { q: "" },
+        { q: "x".repeat(201) },
+        { q: "all-in", min_avg_episode_minutes: -1 },
+        { q: "all-in", max_avg_episode_minutes: 10081 },
+        { q: "all-in", guest_occupation: "x".repeat(201) },
         { q: "all-in", limit: 0 },
         { q: "all-in", limit: 101 },
         { q: "all-in", popularity_threshold: 1.5 },
@@ -171,10 +176,13 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.01 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        assert(
+            ((result.output as Record<string, unknown>).data as unknown[])
+                .length > 0,
+            "live page carries results",
+        );
         assert(Array.isArray((result.output as Record<string, unknown>).data));
     },
 });

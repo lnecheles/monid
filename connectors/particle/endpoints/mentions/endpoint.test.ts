@@ -31,6 +31,7 @@ Deno.test(`${ID} happy (recorded): $0.04 flat, episode groups ride through`, asy
     });
     const output = result.output as Record<string, unknown>;
     assert(Array.isArray(output.data));
+    assertEquals((output.data as unknown[]).length, 2);
     assertEquals(typeof output.has_more, "boolean");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
@@ -59,6 +60,7 @@ Deno.test(`${ID}: the gate — bounds, enums, booleans, unknown keys`, async () 
     const fixture = await loadFixture(`${fixturesDir}happy-mentions.json`);
     const rejected: Record<string, Json>[] = [
         { company_id: "" },
+        { company_id: "nvidia.com", guest_field: "x".repeat(201) },
         { company_id: "nvidia.com", limit: 0 },
         { company_id: "nvidia.com", context_lines: 21 },
         { company_id: "nvidia.com", sort: "newest" },
@@ -119,10 +121,13 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.04 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        assert(
+            ((result.output as Record<string, unknown>).data as unknown[])
+                .length > 0,
+            "live page carries results",
+        );
         assert(Array.isArray((result.output as Record<string, unknown>).data));
     },
 });

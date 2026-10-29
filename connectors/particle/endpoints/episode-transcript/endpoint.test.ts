@@ -45,10 +45,7 @@ Deno.test(`${ID} happy (recorded): $0.03 flat, the lines ride through`, async ()
         credits: { default: 0.03 },
         evidence: { CALL: 1 },
     });
-    assert(
-        typeof result.output === "object" && result.output !== null,
-        "a JSON transcript body",
-    );
+    assertEquals(result.output, fixture.calls[0].res.body);
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
         { default: 0.03 },
@@ -119,9 +116,9 @@ Deno.test({
             false,
             JSON.stringify(result.output),
         );
-        assertEquals(result.usage, {
-            credits: { default: 0.03 },
-            evidence: { CALL: 1 },
-        });
+        assertEquals(result.usage.evidence, { CALL: 1 });
+        assertEquals(typeof result.usage.credits.default, "number");
+        const lines = (result.output as Record<string, unknown>).lines;
+        assert(Array.isArray(lines) && lines.length > 0, "transcript lines");
     },
 });

@@ -8,7 +8,7 @@ import { zCursor, zLanguage, zLimit } from "../../../schema/common.ts";
  * strings on the wire. Strict: an unknown key is INVALID_INPUT.
  */
 export const zPodcastsSearchQueryParams = z.strictObject({
-    q: z.string().min(1).describe(
+    q: z.string().min(1).max(200).describe(
         "Podcast name to search for. Forgiving: handles typos, missing or " +
             "extra words ('offline jon favreau'), a name plus qualifiers " +
             "('equity techcrunch'), and pasted episode titles. Each " +
@@ -19,7 +19,7 @@ export const zPodcastsSearchQueryParams = z.strictObject({
             "by match quality, ties broken by popularity; popularity " +
             "orders purely by global popularity.",
     ).optional(),
-    slug: z.string().min(1).describe(
+    slug: z.string().min(1).max(200).describe(
         "Filter by exact podcast slug (e.g. 'all-in').",
     ).optional(),
     topic_id: z.string().min(1).describe(
@@ -60,20 +60,20 @@ export const zPodcastsSearchQueryParams = z.strictObject({
         "Filter by whether episodes have discovered video versions (e.g. " +
             "YouTube releases).",
     ).optional(),
-    min_avg_episode_minutes: z.number().int().describe(
+    min_avg_episode_minutes: z.number().int().min(0).max(10080).describe(
         "Only podcasts whose average episode runs at least this many " +
             "minutes.",
     ).optional(),
-    max_avg_episode_minutes: z.number().int().describe(
+    max_avg_episode_minutes: z.number().int().min(0).max(10080).describe(
         "Only podcasts whose average episode runs at most this many " +
             "minutes.",
     ).optional(),
-    min_episodes_per_week: z.number().describe(
+    min_episodes_per_week: z.number().min(0).describe(
         "Only podcasts publishing at least this many episodes per week on " +
             "average over the trailing 90 days (e.g. 5 for weekday " +
             "dailies).",
     ).optional(),
-    max_episodes_per_week: z.number().describe(
+    max_episodes_per_week: z.number().min(0).describe(
         "Only podcasts publishing at most this many episodes per week on " +
             "average (e.g. 0.5 for fortnightly-or-slower shows).",
     ).optional(),
@@ -81,16 +81,16 @@ export const zPodcastsSearchQueryParams = z.strictObject({
         "active = released an episode within the last 90 days; dormant = " +
             "has not.",
     ).optional(),
-    guest_occupation: z.string().min(1).describe(
+    guest_occupation: z.string().min(1).max(200).describe(
         "Only shows whose analyzed guests include someone listed under " +
             "this SOC 2018 or ISCO-08 occupation (code, slug, title, SOC " +
             "group, or an everyday name such as physicians).",
     ).optional(),
-    guest_field: z.string().min(1).describe(
+    guest_field: z.string().min(1).max(200).describe(
         "Only shows whose analyzed guests include someone listed under " +
             "this ANZSRC 2020 field of research (code, slug, or title).",
     ).optional(),
-    min_analyzed_guest_appearances: z.number().int().describe(
+    min_analyzed_guest_appearances: z.number().int().min(0).describe(
         "Only shows with at least this many guest appearances analyzed " +
             "for expertise; raise it to steady the share filters.",
     ).optional(),
