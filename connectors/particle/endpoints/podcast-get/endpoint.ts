@@ -5,8 +5,7 @@ import {
 } from "./schema/inputs.ts";
 
 /**
- * GET /v1/podcasts/{id} — one show. $0.01 per call (OpenAPI x-payment-info,
- * 2026-10-28): inherits the provider's PER_CALL. The engine substitutes
+ * GET /v1/podcasts/{id} — one show. $0.003 per call (particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29): inherits the provider's PER_CALL. The engine substitutes
  * `{id}` from pathParams before the call.
  */
 export default defineEndpoint({

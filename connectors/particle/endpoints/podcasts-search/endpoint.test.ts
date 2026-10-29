@@ -20,15 +20,15 @@ Deno.test("particle: seven GET docs, one auth fn, one USD pool, flat PER_CALL, n
     const ids = Object.keys(bundle.endpoints).filter((id) =>
         id.startsWith("particle#")
     ).sort();
-    // pinned from api.particle.pro/openapi.json x-payment-info (2026-10-28)
+    // pinned from particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29
     const prices: Record<string, number> = {
-        "particle#v1/entities/search": 0.01,
-        "particle#v1/podcasts/episodes/search": 0.03,
-        "particle#v1/podcasts/episodes/{id}/transcript": 0.03,
-        "particle#v1/podcasts/mentions": 0.04,
-        "particle#v1/podcasts/search": 0.01,
-        "particle#v1/podcasts/{id}": 0.01,
-        "particle#v1/podcasts/{id}/episodes": 0.03,
+        "particle#v1/entities/search": 0.003,
+        "particle#v1/podcasts/episodes/search": 0.01,
+        "particle#v1/podcasts/episodes/{id}/transcript": 0.01,
+        "particle#v1/podcasts/mentions": 0.015,
+        "particle#v1/podcasts/search": 0.003,
+        "particle#v1/podcasts/{id}": 0.003,
+        "particle#v1/podcasts/{id}/episodes": 0.01,
     };
     assertEquals(ids, Object.keys(prices).sort());
 
@@ -63,7 +63,7 @@ Deno.test("particle: seven GET docs, one auth fn, one USD pool, flat PER_CALL, n
     }
 });
 
-Deno.test(`${ID} happy (recorded): $0.01 flat, the page rides through`, async () => {
+Deno.test(`${ID} happy (recorded): $0.003 flat, the page rides through`, async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(
         `${fixturesDir}happy-podcasts-search.json`,
@@ -77,7 +77,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the page rides through`, async ()
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
     assertEquals(result.usage, {
-        credits: { default: 0.01 },
+        credits: { default: 0.003 },
         evidence: { CALL: 1 },
     });
     const output = result.output as Record<string, unknown>;
@@ -88,7 +88,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the page rides through`, async ()
     assertEquals(typeof first.slug, "string");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
-        { default: 0.01 },
+        { default: 0.003 },
     );
 });
 

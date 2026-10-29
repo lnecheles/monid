@@ -2,8 +2,7 @@ import { defineEndpoint, UsageModelKind } from "@shared/core";
 import { zEpisodesSearchQueryParams } from "./schema/inputs.ts";
 
 /**
- * GET /v1/podcasts/episodes/search — search inside episode dialogue. $0.03
- * per call (OpenAPI x-payment-info, 2026-10-28): overrides the amount.
+ * GET /v1/podcasts/episodes/search — search inside episode dialogue. $0.01 per call (particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29): overrides the amount.
  */
 export default defineEndpoint({
     meta: {
@@ -45,7 +44,7 @@ export default defineEndpoint({
         model: {
             kind: UsageModelKind.PER_CALL,
             label: "call",
-            consumes: { credit: "default", amount: 0.03 },
+            consumes: { credit: "default", amount: 0.01 },
         },
     },
 });

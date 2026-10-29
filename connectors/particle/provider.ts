@@ -5,15 +5,17 @@ import { defineProvider, presets, UsageModelKind } from "@shared/core";
  * synchronous GET against `https://api.particle.pro`, auth `X-API-Key`
  * (api.particle.pro/openapi.json and llms.txt, read 2026-10-28).
  *
- * Billing: Particle prices every billable endpoint as a FIXED amount in US
- * dollars per request — the OpenAPI carries it as `x-payment-info.price`
- * (whole cents from $0.01) — charged whether or not the call finds
- * anything. No response body carries a meter (the `Payment-Receipt` header
- * exists only on the keyless x402/MPP path, which this connector does not
- * use), so there is no `usage.consolidate` and the derived fold settles —
- * the keenable/pdl posture. One pool `default` ("US dollars") and a
- * provider-level PER_CALL of $0.01; endpoints that cost more override the
- * amount and nothing else.
+ * Billing: Particle publishes a fixed US-dollar LIST PRICE per call for
+ * every endpoint (particle.pro/pricing, "Endpoint List Prices", Individual
+ * column, read 2026-10-29): that is what an API-key account pays per call
+ * beyond its monthly request bundle, on any plan. The OpenAPI
+ * `x-payment-info.price` on each operation is a DIFFERENT, higher rate card —
+ * the keyless x402/MPP price (about 3x list) — which a keyed account never
+ * pays, so it is not the pin. No response body carries a meter (the
+ * `Payment-Receipt` header exists only on the keyless path), so there is no
+ * `usage.consolidate` and the derived fold settles — the keenable/pdl
+ * posture. One pool `default` ("US dollars") and a provider-level PER_CALL of
+ * $0.003; endpoints that cost more override the amount and nothing else.
  *
  * Errors are RFC 7807 problem+json (`type`, `title`, `status`, `detail`,
  * `error_code`, `resolve{message,url,action}`). `fromError` lifts the
@@ -61,22 +63,23 @@ export default defineProvider({
     timeouts: { requestMs: 60_000, runMs: 60_000 },
     usage: {
         /** THE credit system (design D26): Particle's published prices
-         *  are dollar amounts per request, so the pool IS US dollars —
-         *  pinned from the OpenAPI `x-payment-info.price` of each
-         *  operation (2026-10-28), re-audited on repricing. */
+         *  are dollar amounts per call, so the pool IS US dollars —
+         *  pinned from the pricing page's Individual (list) column
+         *  (2026-10-29), re-audited on repricing. */
         credits: {
             default: {
                 label: "US dollars",
-                description: "Particle's published per-call price in US " +
-                    "dollars (api.particle.pro/llms.txt, 2026-10-28).",
+                description: "Particle's published list price per call in US " +
+                    "dollars (particle.pro/pricing, Endpoint List Prices, " +
+                    "Individual column, 2026-10-29).",
             },
         },
-        /** The $0.01 tier; costlier endpoints override the amount. No
+        /** The $0.003 tier; costlier endpoints override the amount. No
          *  `consolidate`: no response body carries a receipt. */
         model: {
             kind: UsageModelKind.PER_CALL,
             label: "call",
-            consumes: { credit: "default", amount: 0.01 },
+            consumes: { credit: "default", amount: 0.003 },
         },
     },
     output: {

@@ -6,7 +6,7 @@ import {
 
 /**
  * GET /v1/podcasts/episodes/{id}/transcript — one episode's diarized
- * transcript. $0.03 per call (OpenAPI x-payment-info, 2026-10-28):
+ * transcript. $0.01 per call (particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29):
  * overrides the amount.
  */
 export default defineEndpoint({
@@ -46,7 +46,7 @@ export default defineEndpoint({
         model: {
             kind: UsageModelKind.PER_CALL,
             label: "call",
-            consumes: { credit: "default", amount: 0.03 },
+            consumes: { credit: "default", amount: 0.01 },
         },
     },
 });

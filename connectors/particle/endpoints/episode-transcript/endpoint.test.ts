@@ -24,7 +24,7 @@ const INPUT = {
     queryParams: { start: 0, end: 60 },
 };
 
-Deno.test(`${ID} happy (recorded): $0.03 flat, the lines ride through`, async () => {
+Deno.test(`${ID} happy (recorded): $0.01 flat, the lines ride through`, async () => {
     const unit = await testSealedUnit(ID);
     assertEquals(
         unit.doc.request.url,
@@ -42,13 +42,13 @@ Deno.test(`${ID} happy (recorded): $0.03 flat, the lines ride through`, async ()
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
     assertEquals(result.usage, {
-        credits: { default: 0.03 },
+        credits: { default: 0.01 },
         evidence: { CALL: 1 },
     });
     assertEquals(result.output, fixture.calls[0].res.body);
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
-        { default: 0.03 },
+        { default: 0.01 },
     );
 });
 

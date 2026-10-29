@@ -5,8 +5,8 @@ import {
 } from "./schema/inputs.ts";
 
 /**
- * GET /v1/podcasts/{id}/episodes — a show's episodes. $0.03 per call
- * (OpenAPI x-payment-info, 2026-10-28): overrides the provider's amount.
+ * GET /v1/podcasts/{id}/episodes — a show's episodes. $0.01 per call
+ * (particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29): overrides the provider's amount.
  */
 export default defineEndpoint({
     meta: {
@@ -41,7 +41,7 @@ export default defineEndpoint({
         model: {
             kind: UsageModelKind.PER_CALL,
             label: "call",
-            consumes: { credit: "default", amount: 0.03 },
+            consumes: { credit: "default", amount: 0.01 },
         },
     },
 });

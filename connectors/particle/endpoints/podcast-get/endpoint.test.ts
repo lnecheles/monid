@@ -18,7 +18,7 @@ type Gate = {
 const ID = "particle#v1/podcasts/{id}";
 const INPUT = { pathParams: { id: "all-in" }, queryParams: { topic_limit: 3 } };
 
-Deno.test(`${ID} happy (recorded): $0.01 flat, the show rides through`, async () => {
+Deno.test(`${ID} happy (recorded): $0.003 flat, the show rides through`, async () => {
     const unit = await testSealedUnit(ID);
     assertEquals(
         unit.doc.request.url,
@@ -34,7 +34,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the show rides through`, async ()
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
     assertEquals(result.usage, {
-        credits: { default: 0.01 },
+        credits: { default: 0.003 },
         evidence: { CALL: 1 },
     });
     const output = result.output as Record<string, unknown>;
@@ -43,7 +43,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, the show rides through`, async ()
     assertEquals(typeof output.title, "string");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
-        { default: 0.01 },
+        { default: 0.003 },
     );
 });
 

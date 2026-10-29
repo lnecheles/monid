@@ -51,4 +51,9 @@
       mirrors with gate cases; entities/search describes the spec's
       match_quality values (exact, strong, contained, fuzzy, description,
       speculative)
+- [x] 5.2 Rate card repinned to Particle's LIST prices (particle.pro/pricing,
+      Endpoint List Prices, Individual column, 2026-10-29): $0.003 search /
+      get / entities, $0.01 episodes / episode search / transcript, $0.015
+      mentions. The OpenAPI x-payment-info amounts first pinned are the
+      keyless x402/MPP rate card (about 3x), which a keyed account never pays.
 

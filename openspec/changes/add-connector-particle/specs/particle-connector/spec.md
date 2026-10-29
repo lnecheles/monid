@@ -6,20 +6,21 @@
 The particle provider SHALL declare name `particle`, `request.baseUrl`
 `https://api.particle.pro`, auth `presets.auth.header("X-API-Key")`,
 timeouts 60 s / 60 s, one credit pool `default` ("US dollars"), a
-provider-level `usage.model` of PER_CALL $0.01, NO `usage.consolidate`
+provider-level `usage.model` of PER_CALL $0.003 (Particle's list price,
+particle.pro/pricing Individual column, 2026-10-29), NO `usage.consolidate`
 (no response body carries a receipt), and an `output.fromError` that
 digests Particle's RFC 7807 envelope into `{message, code?, resolve?,
 raw}`.
 
-#### Scenario: A $0.01 endpoint settles its flat price
+#### Scenario: A $0.003 endpoint settles its flat price
 - **WHEN** `GET /v1/podcasts/search?q=all-in&limit=2` returns 200
-- **THEN** usage is `{credits: {default: 0.01}, evidence: {CALL: 1}}`
+- **THEN** usage is `{credits: {default: 0.003}, evidence: {CALL: 1}}`
 - **AND** the output carries `data`, `has_more` and `cursor`
 
 #### Scenario: A costlier endpoint overrides only the amount
 - **WHEN** `GET /v1/podcasts/mentions?company_id=nvidia.com&limit=2`
   returns 200
-- **THEN** usage is `{credits: {default: 0.04}, evidence: {CALL: 1}}`
+- **THEN** usage is `{credits: {default: 0.015}, evidence: {CALL: 1}}`
 - **AND** the doc's auth fn and credit pool are the provider's
 
 #### Scenario: A 401 is digested data, zero usage

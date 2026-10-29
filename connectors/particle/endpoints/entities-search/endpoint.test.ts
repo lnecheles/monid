@@ -14,7 +14,7 @@ const fixturesDir = fromFileUrl(new URL("../../fixtures/", import.meta.url));
 const ID = "particle#v1/entities/search";
 const INPUT = { queryParams: { q: "nvidia", limit: 2 } };
 
-Deno.test(`${ID} happy (recorded): $0.01 flat, matches ride through`, async () => {
+Deno.test(`${ID} happy (recorded): $0.003 flat, matches ride through`, async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(
         `${fixturesDir}happy-entities-search.json`,
@@ -28,7 +28,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, matches ride through`, async () =
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
     assertEquals(result.usage, {
-        credits: { default: 0.01 },
+        credits: { default: 0.003 },
         evidence: { CALL: 1 },
     });
     const output = result.output as Record<string, unknown>;
@@ -45,7 +45,7 @@ Deno.test(`${ID} happy (recorded): $0.01 flat, matches ride through`, async () =
     assertEquals(typeof record.slug, "string");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
-        { default: 0.01 },
+        { default: 0.003 },
     );
 });
 

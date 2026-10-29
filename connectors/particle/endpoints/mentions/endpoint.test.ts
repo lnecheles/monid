@@ -14,7 +14,7 @@ const fixturesDir = fromFileUrl(new URL("../../fixtures/", import.meta.url));
 const ID = "particle#v1/podcasts/mentions";
 const INPUT = { queryParams: { company_id: "nvidia.com", limit: 2 } };
 
-Deno.test(`${ID} happy (recorded): $0.04 flat, episode groups ride through`, async () => {
+Deno.test(`${ID} happy (recorded): $0.015 flat, episode groups ride through`, async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(`${fixturesDir}happy-mentions.json`);
     const result = await runEndpoint({
@@ -26,7 +26,7 @@ Deno.test(`${ID} happy (recorded): $0.04 flat, episode groups ride through`, asy
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
     assertEquals(result.usage, {
-        credits: { default: 0.04 },
+        credits: { default: 0.015 },
         evidence: { CALL: 1 },
     });
     const output = result.output as Record<string, unknown>;
@@ -35,7 +35,7 @@ Deno.test(`${ID} happy (recorded): $0.04 flat, episode groups ride through`, asy
     assertEquals(typeof output.has_more, "boolean");
     assertEquals(
         (await estimateEndpoint(unit, INPUT)).credits,
-        { default: 0.04 },
+        { default: 0.015 },
     );
 });
 

@@ -2,8 +2,8 @@ import { defineEndpoint } from "@shared/core";
 import { zPodcastsSearchQueryParams } from "./schema/inputs.ts";
 
 /**
- * GET /v1/podcasts/search — the canonical podcast search. $0.01 per call
- * (OpenAPI x-payment-info, 2026-10-28): inherits the provider's PER_CALL.
+ * GET /v1/podcasts/search — the canonical podcast search. $0.003 per call
+ * (particle.pro/pricing, Endpoint List Prices, Individual column, 2026-10-29): inherits the provider's PER_CALL.
  */
 export default defineEndpoint({
     meta: {
